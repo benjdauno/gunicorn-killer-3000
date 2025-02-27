@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: gunicorn-killer-3000
+  namespace: default
+spec:
+  template:
+    metadata:
+      name: gunicorn-killer-3000
+    spec:
+      serviceAccountName: gunicorn-killer-3000
+      restartPolicy: Never
+      containers:
+        - name: gunicorn-killer-3000
+          image: alpine/k8s:1.29.13
+          #image: gunicorn-killer-3000:0.0.4
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - "kubectl delete pods -l app=dummy -n default"
